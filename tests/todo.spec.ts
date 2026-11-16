@@ -39,6 +39,7 @@ test('TL-19-2 Create two Todo item', async ({ page }) => {
 
    */
 });
+
   test('TL-19-3 Create two Todo items -> click "clear completed"', async ({ page }) => {
     const todoInput = page.getByTestId('text-input');
     const main = page.getByTestId('main');
@@ -60,9 +61,8 @@ test('TL-19-2 Create two Todo item', async ({ page }) => {
     await clearCompletedButton.click();
     expect(await itemCountSpan.innerText()).toContain('1');
     expect(await todoItem.count()).toBe(1);
-
-
   });
+
   test('TL-19-4 Create two Todo items -> set active filter -> activate 1 on completed filter', async ({ page }) => {
     const todoInput = page.getByTestId('text-input');
     const main = page.getByTestId('main');
@@ -86,8 +86,6 @@ test('TL-19-2 Create two Todo item', async ({ page }) => {
     await completedFilter.click();
     expect(await todoItem.count()).toBe(1);
     expect(await todoItem.innerText()).toBe('activated');
-
-
   });
 
 });
