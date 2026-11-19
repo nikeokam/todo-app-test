@@ -1,0 +1,23 @@
+import { expect, Locator, Page } from '@playwright/test'
+import { BaseAtom } from './BaseAtom'
+
+export class Input extends BaseAtom{
+
+    constructor(container: Page | Locator, dataTestId: string /* "test-123" */) {
+        super(container, dataTestId)
+    }
+
+
+    async fill(text: string | number): Promise<void> {
+        await this.atomLoc.fill(String(text))
+    }
+
+    async clear(): Promise<void> {
+        await this.atomLoc.clear()
+    }
+
+    async checkVisible(visible = true): Promise<void> {
+        await expect(this.atomLoc).toBeVisible({ visible: visible })
+    }
+
+}

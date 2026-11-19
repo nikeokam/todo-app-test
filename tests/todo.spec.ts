@@ -3,6 +3,8 @@ import { test, expect } from '@playwright/test';
 
 
 test.describe("ToDo app tests", ()=>{
+
+
   test.beforeEach(async({page})=>{
     await page.goto('/');
   })
@@ -86,6 +88,37 @@ test('TL-19-2 Create two Todo item', async ({ page }) => {
     await completedFilter.click();
     expect(await todoItem.count()).toBe(1);
     expect(await todoItem.innerText()).toBe('activated');
+  });
+
+  test('TL-19-5 Create and activate item', async ({ page }) => {
+    const todoInput = page.getByTestId('text-input');
+    const main = page.getByTestId('main');
+    const todoItem = main.getByTestId('todo-item');
+    const activateButtonOnFirstItem = todoItem.first().getByTestId('todo-item-toggle');
+    const completedFilter = page.getByRole("link", {name: 'Completed'});
+
+    await expect(todoItem).not.toBeVisible();
+    await todoInput.fill('test todo item');
+    await todoInput.press('Enter');
+    await expect(todoItem).toBeVisible();
+    await activateButtonOnFirstItem.click();
+    await completedFilter.click();
+    expect(await todoItem.count()).toBe(1);
+  });
+
+  test('TL-19-6 Create and delete item', async ({ page }) => {
+    const todoInput = page.getByTestId('text-input');
+    const main = page.getByTestId('main');
+    const todoItem = main.getByTestId('todo-item');
+    const exitBtn = page.getByTestId('todo-item-button');
+
+    await expect(todoItem).not.toBeVisible();
+    await todoInput.fill('test todo item');
+    await todoInput.press('Enter');
+    await expect(todoItem).toBeVisible();
+    await todoItem.hover();
+    await exitBtn.click();
+    await expect(todoItem).not.toBeVisible();
   });
 
 });
