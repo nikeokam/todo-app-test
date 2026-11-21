@@ -6,7 +6,7 @@ import {ToDoItem} from "../atoms/ToDoItem";
 
 
 
-export class BasePage {
+export class ToDoPage {
     readonly page: Page
     readonly todoInput: Input;
     readonly itemCountSpan:  Locator ;
@@ -16,6 +16,7 @@ export class BasePage {
     readonly clearCompletedButton: Locator;
     readonly activeFilter : Locator;
     readonly completedFilter : Locator
+    readonly allFilter : Locator;
     readonly exitBtn: Button;
 
     constructor(page: Page) {
@@ -28,6 +29,7 @@ export class BasePage {
         this.clearCompletedButton = page.locator('.clear-completed');
         this.activeFilter = page.getByRole("link", {name: 'Active'});
         this.completedFilter = page.getByRole("link", {name: 'Completed'});
+        this.allFilter = page.getByRole("link", {name: 'All'});
         this.exitBtn = new Button(page,'todo-item-button');
 
     }
@@ -39,8 +41,6 @@ export class BasePage {
     async checkCounterText(text: string): Promise<void> {
         expect(await this.itemCountSpan.innerText()).toContain(text);
     }
-
-
 
     async clickOnActiveFilter(): Promise<void> {
         await this.activeFilter.click();

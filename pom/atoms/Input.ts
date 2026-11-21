@@ -12,10 +12,6 @@ export class Input extends BaseAtom{
         await this.atomLoc.fill(String(text))
     }
 
-    async clear(): Promise<void> {
-        await this.atomLoc.clear()
-    }
-
     async checkVisible(visible = true): Promise<void> {
         await expect(this.atomLoc).toBeVisible({ visible: visible })
     }

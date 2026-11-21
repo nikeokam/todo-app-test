@@ -1,106 +1,102 @@
-import { test, expect } from '@playwright/test';
-import {BasePage} from "../pom/pages/BasePage";
+import { test } from '@playwright/test';
+import {ToDoPage} from "../pom/pages/ToDoPage";
 
 
 test.describe("ToDo app tests", ()=>{
 
-    let basePage : BasePage;
+    let toDoPage : ToDoPage;
 
     test.beforeEach(async({page})=>{
         await page.goto('/');
-        basePage = new BasePage(page);
+        toDoPage = new ToDoPage(page);
     })
-    test('TL-19-8 pom test ', async ({ page }) => {
 
+    test('TL-19-1 Create one Todo item', async ({  }) => {
 
-
-    });
-
-
-    test('TL-19-1 Create one Todo item', async ({ page }) => {
-
-        await basePage.todoItem.checkVisible(false)
-        await basePage.todoInput.fill('test todo item');
-        await basePage.todoInput.press()
-        await basePage.todoItem.checkVisible(true)
+        await toDoPage.todoItem.checkVisible(false);
+        await toDoPage.todoInput.fill('test todo item');
+        await toDoPage.todoInput.press();
+        await toDoPage.todoItem.checkVisible(true);
 
     });
 
 
-    test('TL-19-2 Create two Todo item', async ({ page }) => {
+    test('TL-19-2 Create two Todo item', async ({  }) => {
 
-        await basePage.checkCounterVisible(false);
-        await basePage.todoInput.fill('test todo item');
-        await basePage.todoInput.press()
-        await basePage.todoInput.fill('test todo item 2');
-        await basePage.todoInput.press()
-        await basePage.checkCounterText('2')
-
-    });
-
-    test('TL-19-3 Create two Todo items -> click "clear completed"', async ({ page }) => {
-
-        await basePage.todoItem.checkVisible(false)
-        await basePage.todoInput.fill('test todo item');
-        await basePage.todoInput.press()
-        await basePage.todoInput.fill('test todo item 2');
-        await basePage.todoInput.press()
-
-        await basePage.todoItem.checkCount(2);
-        await basePage.checkCounterText('2')
-        await basePage.activateButtonOnFirstItem.click();
-        await basePage.checkCounterText('1')
-        await basePage.todoItem.checkCount(2);
-        await basePage.clearCompletedButton.click();
-        await basePage.checkCounterText('1')
-        await basePage.todoItem.checkCount(1);
+        await toDoPage.checkCounterVisible(false);
+        await toDoPage.todoInput.fill('test todo item');
+        await toDoPage.todoInput.press();
+        await toDoPage.todoInput.fill('test todo item 2');
+        await toDoPage.todoInput.press();
+        await toDoPage.checkCounterText('2');
 
     });
 
-    test('TL-19-4 Create two Todo items -> set active filter -> activate 1 on completed filter', async ({ page }) => {
+    test('TL-19-3 Create two Todo items -> click "clear completed"', async ({  }) => {
 
-        await basePage.todoItem.checkVisible(false)
-        await basePage.todoInput.fill('activated');
-        await basePage.todoInput.press();
-        await basePage.todoInput.fill('not activated');
-        await basePage.todoInput.press();
-        await basePage.todoItem.checkCount(2);
-        await basePage.clickOnActiveFilter();
-        await basePage.activateButtonOnFirstItem.click();
-        await basePage.checkCounterText('1');
-        await basePage.todoItem.checkCount(1);
-        await basePage.todoItem.checkToDoItemText('not activated');
-        await basePage.clickOnCompletedFilter();
-        await basePage.todoItem.checkCount(1);
-        await basePage.todoItem.checkToDoItemText('activated');
+        await toDoPage.todoItem.checkVisible(false);
+        await toDoPage.todoInput.fill('test todo item');
+        await toDoPage.todoInput.press();
+        await toDoPage.todoInput.fill('test todo item 2');
+        await toDoPage.todoInput.press();
 
-    });
-
-    test('TL-19-5 Create and activate item', async ({ page }) => {
-
-        await basePage.todoItem.checkVisible(false);
-        await basePage.todoInput.fill('test todo item');
-        await basePage.todoInput.press();
-        await basePage.todoItem.checkVisible(true);
-        await basePage.activateButtonOnFirstItem.click();
-        await basePage.completedFilter.click();
-        await basePage.todoItem.checkCount(1);
+        await toDoPage.todoItem.checkCount(2);
+        await toDoPage.checkCounterText('2');
+        await toDoPage.activateButtonOnFirstItem.click();
+        await toDoPage.checkCounterText('1');
+        await toDoPage.todoItem.checkCount(2);
+        await toDoPage.clearCompletedButton.click();
+        await toDoPage.checkCounterText('1');
+        await toDoPage.todoItem.checkCount(1);
 
     });
 
-    test('TL-19-6 Create and delete item', async ({ page }) => {
-        const todoInput = page.getByTestId('text-input');
-        const main = page.getByTestId('main');
-        const todoItem = main.getByTestId('todo-item');
-        const exitBtn = page.getByTestId('todo-item-button');
+    test('TL-19-4 Create two Todo items -> set active filter -> activate 1 on completed filter', async ({  }) => {
 
-        await expect(todoItem).not.toBeVisible();
-        await todoInput.fill('test todo item');
-        await todoInput.press('Enter');
-        await expect(todoItem).toBeVisible();
-        await todoItem.hover();
-        await exitBtn.click();
-        await expect(todoItem).not.toBeVisible();
+        await toDoPage.todoItem.checkVisible(false);
+        await toDoPage.todoInput.fill('activated');
+        await toDoPage.todoInput.press();
+        await toDoPage.todoInput.fill('not activated');
+        await toDoPage.todoInput.press();
+        await toDoPage.todoItem.checkCount(2);
+
+        await toDoPage.clickOnActiveFilter();
+        await toDoPage.activateButtonOnFirstItem.click();
+        await toDoPage.checkCounterText('1');
+        await toDoPage.todoItem.checkCount(1);
+        await toDoPage.todoItem.checkToDoItemText('not activated');
+
+        await toDoPage.clickOnCompletedFilter();
+        await toDoPage.todoItem.checkCount(1);
+        await toDoPage.todoItem.checkToDoItemText('activated');
+
+        await toDoPage.allFilter.click(); //returning to All filter and check
+        await toDoPage.checkCounterText('1');
+
+    });
+
+    test('TL-19-5 Create and activate item', async ({  }) => {
+
+        await toDoPage.todoItem.checkVisible(false);
+        await toDoPage.todoInput.fill('test todo item');
+        await toDoPage.todoInput.press();
+        await toDoPage.todoItem.checkVisible(true);
+        await toDoPage.activateButtonOnFirstItem.click();
+        await toDoPage.completedFilter.click();
+        await toDoPage.todoItem.checkCount(1);
+
+    });
+
+    test('TL-19-6 Create and delete item', async ({  }) => {
+
+        await toDoPage.todoItem.checkVisible(false);
+        await toDoPage.todoInput.fill('test todo item');
+        await toDoPage.todoInput.press();
+        await toDoPage.todoItem.checkVisible();
+        await toDoPage.todoItem.hoverOnItem()
+        await toDoPage.exitBtn.click(); //delete item check
+        await toDoPage.todoItem.checkVisible(false);
+
     });
 
 });

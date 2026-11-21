@@ -15,4 +15,8 @@ export class ToDoItem extends BaseAtom{
         expect(await this.atomLoc.innerText()).toContain(text);
     }
 
+    async hoverOnItem(): Promise<void> {
+        await this.atomLoc.hover();
+    }
+
 }
